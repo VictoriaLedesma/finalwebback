@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sqlite3 = require("sqlite3").verbose();
@@ -9,8 +8,8 @@ const app = express();
 const PORT = 3000;
 const SECRET_KEY = "tu_secreto_seguro";
 
-app.use(cors({ origin: '*' }));
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
 const db = new sqlite3.Database("usuarios.db", (err) => {
     if (err) {
@@ -26,6 +25,10 @@ const db = new sqlite3.Database("usuarios.db", (err) => {
             )`
         );
     }
+});
+
+app.get('/ping', (req, res) => {
+    res.send('pong');
 });
 
 app.post("/register", async (req, res) => {
